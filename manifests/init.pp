@@ -29,7 +29,7 @@ class gitssh(
   user { 'git':
     ensure     => present,
     home       => $basedir,
-    shell      => ${::gitssh::params::gitshell},
+    shell      => "${::gitssh::params::gitshell}",
     managehome => true,
     require    => Package[$package_name],
   }
