@@ -6,15 +6,17 @@ class gitssh(
   $package_ensure = present,
   $package_name   = 'git',
   $purge_ssh_keys = true,
-  $repos          = []
+  $repos          = [],
+  $gitshell = '/usr/local/bin/git-shell'
   ) {
   package { $package_name:
     ensure => $package_ensure,
   }
 
-  exec { "/bin/echo ${::gitssh::params::gitshell} >> /etc/shells":
-    unless => "${::gitssh::params::grep} -q '^${::gitssh::params::gitshell}$' /etc/shells",
-    before => User['git']
+  exec { "/bin/echo git-shell >> /etc/shells":
+    unless => "grep -q '^$gitshell$' /etc/shells",
+    before => User['git'],
+    path => '/bin/:/sbin/:/usr/bin/:/usr/sbin/:/usr/local/bin'
   }
 
   if versioncmp($::puppetversion,'3.6.0') >= 0 {
@@ -29,7 +31,7 @@ class gitssh(
   user { 'git':
     ensure     => present,
     home       => $basedir,
-    shell      => "${::gitssh::params::gitshell}",
+    shell      => "$gitshell",
     managehome => true,
     require    => Package[$package_name],
   }

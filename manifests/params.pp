@@ -6,26 +6,25 @@
 class gitssh::params {
   case $::osfamily {
     'Debian': {
-      $mkdir = '/bin/mkdir'
-      $git = '/usr/bin/git'
+#      Exec { path => '/bin/:/sbin/:/usr/bin/:/usr/sbin/' }
+#      $mkdir = '/bin/mkdir',
+#      $git = '/usr/bin/git',
       $gitshell = '/usr/bin/git-shell'
-      $grep = '/bin/grep'
-      $test = '/usr/bin/test'
     }
     'RedHat': {
-      $mkdir = '/usr/bin/mkdir'
-      $git = '/usr/bin/git'
+#      Exec { path => '/bin/:/sbin/:/usr/bin/:/usr/sbin/' }
+#      $mkdir = '/usr/bin/mkdir',
+#      $git = '/usr/bin/git',
       $gitshell = '/usr/bin/git-shell'
-      $grep = '/bin/grep'
-      $test = '/usr/bin/test'
+#      $test = '/usr/bin/test'
     }
     'OpenBSD': {
-      $mkdir = '/bin/mkdir'
-      $git = '/usr/local/bin/git' # installed from pkg_add
+#      Exec { path => '/bin/:/sbin/:/usr/bin/:/usr/sbin/:/usr/local/bin' }
+#      $mkdir = '/bin/mkdir',
+#      $git = '/usr/local/bin/git', # installed from pkg_add
       $gitshell = '/usr/local/bin/git-shell'
-      $grep = '/usr/bin/grep'
-      $test = '/bin/test'
+#      $test = '/bin/test'
     }
-    default: {}
+    default: { }
   }
 }

@@ -10,18 +10,20 @@ define gitssh::repo(
   $dirname = "${basedir}/${title}.git"
 
   if $ensure == present {
-    exec { "${::gitssh::params::mkdir} ${dirname}":
-      unless  => "${::gitssh::params::test} -d ${dirname}",
+    exec { "mkdir ${dirname}":
+      unless  => "test -d ${dirname}",
       user    => 'git',
       require => Package[$::gitssh::package_name],
-      notify  => Exec["create_repo ${title}"]
+      notify  => Exec["create_repo ${title}"],
+      path => '/bin/:/sbin/:/usr/bin/:/usr/sbin/:/usr/local/bin'
     }
 
     exec { "create_repo ${title}":
-      command     => "${::gitssh::params::git} --bare init",
+      command     => "git --bare init",
       cwd         => $dirname,
       refreshonly => true,
-      user        => 'git'
+      user        => 'git',
+      path => '/bin/:/sbin/:/usr/bin/:/usr/sbin/:/usr/local/bin'
     }
   } elsif $ensure == absent {
     file { $dirname:
