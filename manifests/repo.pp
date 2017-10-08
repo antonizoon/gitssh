@@ -11,14 +11,14 @@ define gitssh::repo(
 
   if $ensure == present {
     exec { "${::gitssh::params::mkdir} ${dirname}":
-      unless  => "/usr/bin/test -d ${dirname}",
+      unless  => "${::gitssh::params::test} -d ${dirname}",
       user    => 'git',
       require => Package[$::gitssh::package_name],
       notify  => Exec["create_repo ${title}"]
     }
 
     exec { "create_repo ${title}":
-      command     => '/usr/bin/git --bare init',
+      command     => "${::gitssh::params::git} --bare init",
       cwd         => $dirname,
       refreshonly => true,
       user        => 'git'

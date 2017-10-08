@@ -12,8 +12,8 @@ class gitssh(
     ensure => $package_ensure,
   }
 
-  exec { '/bin/echo /usr/bin/git-shell >> /etc/shells':
-    unless => '/bin/grep -q \'^/usr/bin/git-shell$\' /etc/shells',
+  exec { "/bin/echo ${::gitssh::params::gitshell} >> /etc/shells":
+    unless => "/bin/grep -q '^${::gitssh::params::gitshell}$' /etc/shells",
     before => User['git']
   }
 
@@ -29,7 +29,7 @@ class gitssh(
   user { 'git':
     ensure     => present,
     home       => $basedir,
-    shell      => '/usr/bin/git-shell',
+    shell      => ${::gitssh::params::gitshell},
     managehome => true,
     require    => Package[$package_name],
   }

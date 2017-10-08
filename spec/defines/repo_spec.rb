@@ -55,4 +55,26 @@ describe 'gitssh::repo' do
               'user'        => 'git')
     end
   end
+
+  context 'Add a repo (OpenBSD)' do
+    let(:title) { 'foobar' }
+
+    let :facts do
+      {
+        osfamily: 'OpenBSD',
+        puppetversion: puppetversion.to_s
+      }
+    end
+
+    it do
+      should contain_exec('/bin/mkdir /var/git/foobar.git')
+        .with('user' => 'git')
+
+      should contain_exec('create_repo foobar')
+        .with('command' => '/usr/local/bin/git --bare init',
+              'cwd'         => '/var/git/foobar.git',
+              'refreshonly' => true,
+              'user'        => 'git')
+    end
+  end
 end

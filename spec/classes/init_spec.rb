@@ -26,7 +26,7 @@ describe 'gitssh' do
         )
       should contain_package('git').with('ensure' => 'present')
       should contain_user('git').with('home' => '/var/git')
-      should contain_exec('/bin/echo /usr/bin/git-shell >> /etc/shells')
+      should contain_exec('/bin/echo ${::gitssh::params::gitshell}$ >> /etc/shells')
     end
   end
 end
