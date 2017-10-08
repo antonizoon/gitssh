@@ -13,7 +13,7 @@ class gitssh(
   }
 
   exec { "/bin/echo ${::gitssh::params::gitshell} >> /etc/shells":
-    unless => "/bin/grep -q '^${::gitssh::params::gitshell}$' /etc/shells",
+    unless => "${::gitssh::params::grep} -q '^${::gitssh::params::gitshell}$' /etc/shells",
     before => User['git']
   }
 
